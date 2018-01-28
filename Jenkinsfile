@@ -22,7 +22,7 @@ stages{
 
 	stage('Deploy To Staging'){
 		
-		step{
+		steps{
 
 		build job: 'DeployToStaging'	
 		}
