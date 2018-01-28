@@ -42,7 +42,7 @@ stages{
 			success{
 				echo 'Code depoloyed A-OK'
 			}
-			faliure{
+			failure{
 				echo 'Deployment Flopped'
 			}
 			
