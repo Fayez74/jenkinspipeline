@@ -26,9 +26,32 @@ stages{
 
 		build job: 'DeployToStaging'	
 		}
+           }
+	
+	
+	stage('Deploy To Production'){
+	
+	steps{
+		timeout(time:5,unit:'DAYS'){
+		input message: 'Approve Production Deployment?'
+		}
+	
+		build job:'DeployToProduction'
+	     }	
+		post{
+			success{
+				echo 'Code depoloyed A-OK'
+			}
+			faliure{
+				echo 'Deployment Flopped'
+			}
 			
-
-		       }	
+		
+		}	
+		
+	}
+	
+	
       }
 }
      
