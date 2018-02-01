@@ -1,57 +1,29 @@
 pipeline {
-    agent any
-    
-    tools {
-        maven 'Maven'
-    }
-  
-    
+ agent any
 
-stages{
+	parameters{
+		string(name: 'Tomcat_Stage, defaultValue: '18.218.26.161',description: 'Staging Server')
+		string(name: 'Tomcat_Prod, defaultValue: '18.219.23.187',description: 'Production Server')      
+		       }
+		       triggers{
+			       pollSCM('* * * * *')
+		       }
+		       
+	stages{
         stage('Build'){
             steps {
                 sh 'mvn clean package'
-        }
+            }
             post {
                 success {
                     echo 'Now Archiving...'
                     archiveArtifacts artifacts: '**/target/*.war'
-                        }
-                 }
+                }
             }
+        }	       
 
-	stage('Deploy To Staging'){
-		
-		steps{
 
-		build job: 'DeployToStaging'	
-		}
-           }
-	
-	
-	stage('Deploy To Production'){
-	
-	steps{
-		timeout(time:5,unit:'DAYS'){
-		input message: 'Approve Production Deployment?'
-		}
-	
-		build job:'DeployToProduction'
-	     }	
-		post{
-			success{
-				echo 'Code depoloyed A-OK'
-			}
-			failure{
-				echo 'Deployment Flopped'
-			}
-			
-		
-		}	
-		
-	}
-	
-	
-      }
-}
+
+
+
      
